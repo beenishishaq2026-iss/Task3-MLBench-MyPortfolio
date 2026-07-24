@@ -4,7 +4,7 @@ import Education from "./components/Education";
 
 function App() {
   return (
-    <div className="bg-black min-h-screen">
+    <div className="min-h-screen">
       <Navbar />
       <Hero />
       <Education />
