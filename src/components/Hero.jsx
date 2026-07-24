@@ -59,24 +59,43 @@ function Hero() {
 
       </div>
 
+<div className="flex-1 flex justify-center">
 
-      <div className="flex justify-center">
-<div className="flex justify-center">
-
-  <div className="
-      w-80 
-      h-80 
-      bg-green-500 
-      rounded-full 
+  <div className="relative 
+      w-72 h-80 
+      md:w-96 md:h-[420px]
+      bg-gradient-to-br 
+      from-green-400 
+      via-green-600 
+      to-green-800
+      rounded-[45%_55%_60%_40%/60%_40%_60%_40%]
       overflow-hidden">
 
-      <img
-       src={Profile}
-       className="w-full h-full object-cover"
-/>
-  </div>
+    <div 
+      className="
+      absolute 
+      -top-10 
+      -right-10 
+      w-40 
+      h-40 
+      bg-green-300 
+      rounded-full 
+      blur-2xl 
+      opacity-30">
+    </div>
 
-</div>
+
+    <img
+      src={Profile}
+      alt="Profile"
+      className="
+      relative 
+      w-full 
+      h-full 
+      object-cover"
+    />
+
+  </div>
 
 </div>
 
