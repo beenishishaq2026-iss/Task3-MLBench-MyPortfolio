@@ -1,20 +1,36 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Education from "./components/Education";
 import Skills from "./components/Skills";
-import Projects from "./components/Projects.jsx"
+import Projects from "./components/Projects"
 import Contact from "./components/Contact.jsx";
+import Login from "./pages/Login.jsx";
+
+function Home(){
+  return(
+    <>
+    <Hero/>
+    <Education/>
+    <Skills/>
+    <Projects/>
+    <Contact/>
+    </>
+  );
+}
 
 function App() {
   return (
+    <BrowserRouter>
     <div className="min-h-screen">
       <Navbar />
-      <Hero />
-      <Education />
-      <Skills />
-      <Projects />
-      <Contact/>
+      <Routes>
+       <Route path="/" element={<Home />} />
+        <Route path="/Login" element={<Login />} />
+      </Routes>
     </div>
+     </BrowserRouter>
   );
 }
 
