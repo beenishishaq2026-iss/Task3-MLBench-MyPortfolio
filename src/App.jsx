@@ -1,7 +1,8 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Education from "./components/Education";
-import Skills from "./components/Skills"
+import Skills from "./components/Skills";
+import Projects from "./components/Projects.jsx"
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Hero />
       <Education />
       <Skills />
+      <Projects />
     </div>
   );
 }
