@@ -7,6 +7,7 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects"
 import Contact from "./components/Contact.jsx";
 import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup";
 
 function Home(){
   return(
@@ -28,6 +29,7 @@ function App() {
       <Routes>
        <Route path="/" element={<Home />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </div>
      </BrowserRouter>
