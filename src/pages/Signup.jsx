@@ -7,18 +7,47 @@ function Signup() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup data:", formData);
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Something went wrong");
+        setLoading(false);
+        return;
+      }
+
+      setSuccess("Account created successfully!");
+      localStorage.setItem("token", data.token);
+      setFormData({ name: "", email: "", password: "" });
+    } catch (err) {
+      setError("Server error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-   <div className="min-h-screen flex items-start justify-center px-4 pt-12 pb-8">
+    <div className="min-h-screen flex items-start justify-center px-4 pt-12 pb-8">
       <div className="w-full max-w-md bg-gradient-to-br from-green-800/50 via-green-950 to-[#0a0f0d] border-[3px] border-green-400 rounded-2xl p-6">
         <h1 className="text-xl font-bold text-white mb-1">
           Create <span className="text-green-500">Account</span>
@@ -73,12 +102,16 @@ function Signup() {
             </div>
           </div>
 
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          {success && <p className="text-green-400 text-sm text-center">{success}</p>}
+
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-black font-medium py-2 rounded-full mt-1 transition-colors flex items-center justify-center gap-2"
+            disabled={loading}
+            className="bg-green-500 hover:bg-green-600 text-black font-medium py-2 rounded-full mt-1 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
           >
             <UserPlus size={18} />
-            Sign Up
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
 
