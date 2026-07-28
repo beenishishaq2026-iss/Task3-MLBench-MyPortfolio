@@ -8,14 +8,43 @@ function Contact() {
     message: "",
   });
 
+  const [error, setError] = useState("");
+const [success, setSuccess] = useState("");
+const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Contact form data:", formData);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setSuccess("");
+  setLoading(true);
+
+  try {
+    const response = await fetch("http://localhost:5000/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || "Something went wrong");
+      setLoading(false);
+      return;
+    }
+
+    setSuccess("Message sent successfully!");
+    setFormData({ name: "", email: "", message: "" });
+  } catch (err) {
+    setError("Server error. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <section id="contact" className="relative px-6 md:px-12 py-8 md:py-12">
@@ -83,13 +112,18 @@ function Contact() {
             ></textarea>
           </div>
 
-          <button
-            type="submit"
-            className="bg-green-500 hover:bg-green-600 text-black font-medium py-2.5 rounded-full mt-2 transition-colors flex items-center justify-center gap-2 self-start px-8"
-          >
-            <Send size={18} />
-            Send Message
-          </button>
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+{success && <p className="text-green-400 text-sm">{success}</p>}
+
+<button
+  type="submit"
+  disabled={loading}
+  className="bg-green-500 hover:bg-green-600 text-black font-medium py-2.5 rounded-full mt-2 transition-colors flex items-center justify-center gap-2 self-start px-8 disabled:opacity-60"
+>
+  <Send size={18} />
+  {loading ? "Sending..." : "Send Message"}
+</button>
+
         </form>
       </div>
     </section>
