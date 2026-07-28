@@ -1,19 +1,52 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Mail, Lock, LogIn } from "lucide-react";
 
 function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login data:", formData);
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Something went wrong");
+        setLoading(false);
+        return;
+      }
+
+      setSuccess("Login successful!");
+      localStorage.setItem("token", data.token);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (err) {
+      setError("Server error. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,12 +90,16 @@ function Login() {
             </div>
           </div>
 
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          {success && <p className="text-green-400 text-sm text-center">{success}</p>}
+
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-black font-medium py-2.5 rounded-full mt-2 transition-colors flex items-center justify-center gap-2"
+            disabled={loading}
+            className="bg-green-500 hover:bg-green-600 text-black font-medium py-2.5 rounded-full mt-2 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
           >
             <LogIn size={18} />
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
