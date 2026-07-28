@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,13 +20,13 @@ function Navbar() {
         </ul>
 
         <div className="hidden md:flex items-center gap-4">
-  <a href="/login" className="text-white hover:text-green-400 text-sm font-medium transition-colors">
-    Login
-  </a>
-  <a href="/signup" className="bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-1.5 rounded-full transition-colors text-sm">
-    Sign Up
-  </a>
-</div>
+          <Link to="/login" className="text-white hover:text-green-400 text-sm font-medium transition-colors">
+            Login
+          </Link>
+          <Link to="/signup" className="bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-1.5 rounded-full transition-colors text-sm">
+            Sign Up
+          </Link>
+        </div>
       </nav>
 
       <button
@@ -58,14 +59,14 @@ function Navbar() {
           <li><a href="#projects" onClick={() => setIsMenuOpen(false)} className="text-gray-200 hover:text-green-500">Projects</a></li>
           <li><a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-gray-200 hover:text-green-500">Contact</a></li>
           <li>
-            <a href="/login" onClick={() => setIsMenuOpen(false)} className="text-white hover:text-green-500">
+            <Link to="/login" onClick={() => setIsMenuOpen(false)} className="text-white hover:text-green-500">
               Login
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/signup" onClick={() => setIsMenuOpen(false)} className="bg-green-500 text-black px-4 py-1.5 rounded-full text-sm">
+            <Link to="/signup" onClick={() => setIsMenuOpen(false)} className="bg-green-500 text-black px-4 py-1.5 rounded-full text-sm">
               Sign Up
-            </a>
+            </Link>
           </li>
         </ul>
       )}
