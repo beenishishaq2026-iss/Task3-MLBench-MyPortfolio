@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { User, Mail, Lock, UserPlus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,36 +17,37 @@ function Signup() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setSuccess("");
+  setLoading(true);
 
-    try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.message || "Something went wrong");
-        setLoading(false);
-        return;
-      }
-
-      setSuccess("Account created successfully!");
-      localStorage.setItem("token", data.token);
-      setFormData({ name: "", email: "", password: "" });
-    } catch (err) {
-      setError("Server error. Please try again.");
-    } finally {
+    if (!response.ok) {
+      setError(data.message || "Something went wrong");
       setLoading(false);
+      return;
     }
-  };
+
+    setSuccess("Account created successfully! Click Login Now");
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500);
+  } catch (err) {
+    setError("Server error. Please try again.");
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-start justify-center px-4 pt-12 pb-8">
